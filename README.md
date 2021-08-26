@@ -17,20 +17,16 @@ pip install -r requirements.txt
 ### Usage
 
 ```sh
-Usage: aws-assume-role.py [OPTIONS] ACCOUNT ROLE
+Usage: aws-assume-role.py [OPTIONS] ACCOUNT ROLE [AWS_PROFILE]
 
-  Assume role
+  Assume AWS role
 
 Arguments:
-  ACCOUNT  [required]
-  ROLE     [required]
+  ACCOUNT        AWS account id  [required]
+  ROLE           AWS role to assume  [required]
+  [AWS_PROFILE]  AWS configuration profile
 
 Options:
-  --aws-profile TEXT
-  --install-completion  Install completion for the current shell.
-  --show-completion     Show completion for the current shell, to copy it or
-                        customize the installation.
+  --help  Show this message and exit.
 
-  --help                Show this message and exit.
 ```
-
