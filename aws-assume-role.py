@@ -5,13 +5,16 @@ from typing import Optional
 
 __version__ = "0.1.0"
 
-app = typer.Typer()
+app = typer.Typer(add_completion=False)
 
 
-def assume(account: str, role: str, aws_profile: Optional[str] = None):
-    """
-    Assume role
-    """
+@app.command()
+def assume_role(
+    account: str = typer.Argument(..., help="AWS account id"),
+    role: str = typer.Argument(..., help="AWS role to assume"),
+    aws_profile: Optional[str] = typer.Argument(None, help="AWS configuration profile"),
+):
+    """Assume AWS role"""
 
     session = boto3.Session()
     if aws_profile:
@@ -29,4 +32,4 @@ def assume(account: str, role: str, aws_profile: Optional[str] = None):
 
 
 if __name__ == "__main__":
-    typer.run(assume)
+    app()
