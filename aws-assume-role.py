@@ -31,5 +31,14 @@ def assume_role(
     )
 
 
+@app.command()
+def discard_role():
+    """Discard current role"""
+
+    print(
+        f"unset AWS_ACCESS_KEY_ID\nunset AWS_SECRET_ACCESS_KEY\nunset AWS_SESSION_TOKEN"
+    )
+
+
 if __name__ == "__main__":
     app()
