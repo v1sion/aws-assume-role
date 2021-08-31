@@ -12,7 +12,7 @@ app = typer.Typer(add_completion=False)
 def assume_role(
     account: str = typer.Argument(..., help="AWS account id"),
     role: str = typer.Argument(..., help="AWS role to assume"),
-    aws_profile: Optional[str] = typer.Argument(None, help="AWS configuration profile"),
+    aws_profile: Optional[str] = typer.Option(None, help="AWS configuration profile"),
 ):
     """Assume AWS role"""
 
