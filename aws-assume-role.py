@@ -3,7 +3,7 @@ import typer
 import boto3
 from typing import Optional
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 app = typer.Typer(add_completion=False)
 
@@ -12,6 +12,8 @@ app = typer.Typer(add_completion=False)
 def assume_role(
     account: str = typer.Argument(..., help="AWS account id"),
     role: str = typer.Argument(..., help="AWS role to assume"),
+    token_code: Optional[str] = typer.Option(None, help="AWS mfa token"),
+    serial_number: Optional[str] = typer.Option(None, help="AWS token id"),
     aws_profile: Optional[str] = typer.Option(None, help="AWS configuration profile"),
 ):
     """Assume AWS role"""
@@ -25,6 +27,13 @@ def assume_role(
         RoleArn=f"arn:aws:iam::{account}:role/{role}",
         RoleSessionName=f"{role}-session",
     )
+    if token_code or serial_number:
+        assumed_role_object = sts_client.assume_role(
+            RoleArn=f"arn:aws:iam::{account}:role/{role}",
+            RoleSessionName=f"{role}-session",
+            TokenCode=token_code,
+            SerialNumber=serial_number,
+        )
     credentials = assumed_role_object["Credentials"]
     print(
         f"export AWS_ACCESS_KEY_ID={credentials['AccessKeyId']}\nexport AWS_SECRET_ACCESS_KEY={credentials['SecretAccessKey']}\nexport AWS_SESSION_TOKEN={credentials['SessionToken']}"
