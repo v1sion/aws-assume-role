@@ -10,23 +10,19 @@ app = typer.Typer(add_completion=False)
 
 @app.command()
 def assume_role(
-    account: str = typer.Argument(..., help="AWS account id"),
     role: str = typer.Argument(..., help="AWS role to assume"),
+    account: str = typer.Argument(..., help="AWS account id"),
     token_code: Optional[str] = typer.Option(None, help="AWS mfa token"),
     serial_number: Optional[str] = typer.Option(None, help="AWS token id"),
-    aws_profile: Optional[str] = typer.Option(None, help="AWS configuration profile"),
+    profile: Optional[str] = typer.Option(None, help="AWS configuration profile"),
 ):
     """Assume AWS role"""
 
     session = boto3.Session()
-    if aws_profile:
-        session = boto3.Session(profile_name=aws_profile)
-
+    if profile:
+        session = boto3.Session(profile_name=profile)
     sts_client = session.client("sts")
-    assumed_role_object = sts_client.assume_role(
-        RoleArn=f"arn:aws:iam::{account}:role/{role}",
-        RoleSessionName=f"{role}-session",
-    )
+
     if token_code or serial_number:
         assumed_role_object = sts_client.assume_role(
             RoleArn=f"arn:aws:iam::{account}:role/{role}",
@@ -34,6 +30,12 @@ def assume_role(
             TokenCode=token_code,
             SerialNumber=serial_number,
         )
+    else:
+        assumed_role_object = sts_client.assume_role(
+            RoleArn=f"arn:aws:iam::{account}:role/{role}",
+            RoleSessionName=f"{role}-session",
+        )
+
     credentials = assumed_role_object["Credentials"]
     print(
         f"export AWS_ACCESS_KEY_ID={credentials['AccessKeyId']}\nexport AWS_SECRET_ACCESS_KEY={credentials['SecretAccessKey']}\nexport AWS_SESSION_TOKEN={credentials['SessionToken']}"

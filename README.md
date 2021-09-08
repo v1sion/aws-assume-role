@@ -6,7 +6,13 @@ Can also discard the current role by unsetting the environment variables.
 ## How to assume a role
 
 ```sh
-eval `./aws-assume-role.py assume-role <account-id> <role-name>`
+eval `./aws-assume-role.py assume-role <role-name> <account-id>`
+```
+
+## With MFA device
+
+```sh
+eval `./aws-assume-role.py assume-role <role-name> <account-id> --token-code <token-code> --serial-number <mfa-device>`
 ```
 
 ### Install
