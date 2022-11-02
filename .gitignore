@@ -1,0 +1,6 @@
+build/
+dist/
+aws_assume_role.egg-info/
+.vscode/
+.python-version
+.dccache

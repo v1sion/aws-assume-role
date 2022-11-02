@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "aws-assume-role"
+version = "0.1.0"
+description = "Assume AWS by automatically setting the AWS credentials as env vars"
+authors = ["v1sion <andremomorais@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+boto3 = "1.18.28"
+typer = "0.3.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"

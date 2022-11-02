@@ -14,7 +14,9 @@ def assume_role(
     account: str = typer.Argument(..., help="AWS account id"),
     token_code: Optional[str] = typer.Option(None, help="AWS mfa token"),
     serial_number: Optional[str] = typer.Option(None, help="AWS token id"),
-    profile: Optional[str] = typer.Option(None, help="AWS configuration profile"),
+    external_id: Optional[str] = typer.Option(None, help="AWS external id"),
+    profile: Optional[str] = typer.Option(
+        None, help="AWS configuration profile"),
 ):
     """Assume AWS role"""
 
@@ -29,6 +31,12 @@ def assume_role(
             RoleSessionName=f"{role}-session",
             TokenCode=token_code,
             SerialNumber=serial_number,
+        )
+    elif external_id:
+        assumed_role_object = sts_client.assume_role(
+            RoleArn=f"arn:aws:iam::{account}:role/{role}",
+            RoleSessionName=f"{role}-session",
+            ExternalId=external_id,
         )
     else:
         assumed_role_object = sts_client.assume_role(
